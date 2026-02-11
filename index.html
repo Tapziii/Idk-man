@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Next-Level Useless Chaos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      user-select: none;
+      cursor: none;
+    }
+    #chaos {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: monospace;
+      font-size: 2rem;
+      color: lime;
+      text-align: center;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+<div id="chaos">WELCOME TO NEXT-LEVEL CHAOS</div>
+<script>
+  const chaos = document.getElementById('chaos');
+
+  function randomChars(length){
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
+    let result='';
+    for(let i=0;i<length;i++) result+=chars[Math.floor(Math.random()*chars.length)];
+    return result;
+  }
+
+  // constantly mutate main text
+  setInterval(()=>{
+    chaos.textContent = randomChars(50 + Math.floor(Math.random()*50));
+    chaos.style.color = `hsl(${Math.random()*360},100%,50%)`;
+    chaos.style.transform = `translate(-50%,-50%) rotate(${Math.random()*720-360}deg) scale(${0.5+Math.random()*3})`;
+  },100);
+
+  // random particles
+  function spawnParticle(x, y){
+    const p=document.createElement('div');
+    const size = 5 + Math.random()*80;
+    p.style.position='absolute';
+    p.style.left=(x||Math.random()*window.innerWidth)+'px';
+    p.style.top=(y||Math.random()*window.innerHeight)+'px';
+    p.style.width=size+'px';
+    p.style.height=size+'px';
+    p.style.borderRadius='50%';
+    p.style.background=`hsl(${Math.random()*360},100%,50%)`;
+    p.style.opacity=Math.random();
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),5000+Math.random()*5000);
+  }
+
+  // mouse chaos
+  document.body.addEventListener('mousemove', e=>{
+    for(let i=0;i<10;i++) spawnParticle(e.clientX + Math.random()*60-30, e.clientY + Math.random()*60-30);
+  });
+
+  // automatic chaos
+  setInterval(()=>{ for(let i=0;i<5;i++) spawnParticle(); },100);
+
+  // extra chaos: rapidly spawning mini texts
+  setInterval(()=>{
+    const txt=document.createElement('div');
+    txt.textContent=randomChars(5+Math.floor(Math.random()*10));
+    txt.style.position='absolute';
+    txt.style.left=Math.random()*window.innerWidth+'px';
+    txt.style.top=Math.random()*window.innerHeight+'px';
+    txt.style.color=`hsl(${Math.random()*360},100%,50%)`;
+    txt.style.fontSize=(10+Math.random()*30)+'px';
+    txt.style.fontFamily='monospace';
+    txt.style.userSelect='none';
+    document.body.appendChild(txt);
+    setTimeout(()=>txt.remove(),3000+Math.random()*3000);
+  },50);
+</script>
+</body>
+</html>
